@@ -3,10 +3,10 @@ Repository containing Alex Hamil's portfolio of work for the data science projec
 
 # Table of Contents
 - [Business Problem Statement](#Business_Problem_Statement)
-- [Our solution to the problem](## Our solution to the problem)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+- [Our Solution to the Problem](#Our_Solution_to_the_Problem)
+- [My Contribution to the Project](#My_Contribution_to_the_Project)
+- [Solution's Value to the Business](#Solution's_Value_to_the_Business)
+- [Challenges Our Group Faced](#Challenges_Our_Group_Faced)
 
 
 ## [Business Problem Statement](#Business_Problem_Statement)
@@ -14,7 +14,7 @@ Home Credit is in the business of trying to provide financial products to custom
 
 The purpose of this project is to create a model that allows Home Credit to build an accurate credit risk profile of their customers based on nontraditional financial data.
 
-## Our solution to the problem
+## [Our Solution to the Problem](#Our_Solution_to_the_Problem)
 * Our solution to the problem started by cleaning and understanding the data and its limitations prior to model selection.
 * Next we tried several different models to see which would handle the data and its imbalances the best.
 * Finally we decided to create several different models and train them on different segments of the downsampled majority class, while resampling sections from the minorty target variable and finally combining the results in an ensemble model.
