@@ -1,0 +1,252 @@
+# Code for: 
+* Creating 3 Different Seeds of the Majority Class Dataset
+* Resampling the Minority Class 
+* Creating 3 Unique Models and Averaging them
+
+# Lasso 3 -Creating First Unique Model
+```{r}
+#set seed for reproducibility
+set.seed(550)
+
+#split training data on the target variable and partition 70% of the rows
+rows <- createDataPartition(down_train$TARGET, p=0.7, list=FALSE)
+
+#subset train data with the 70% sample to create train_fold
+train_fold_ds <- down_train[rows, ]
+
+#subset the remaining 30% of rows to create validation_fold
+validation_fold_ds <- down_train[-rows, ]
+```
+
+```{r, results='hide'}
+# Cross validated, regularized regression model
+lasso_3 <- cv.glmnet(as.matrix(train_fold_ds[, -2]), train_fold_ds$TARGET, 
+                         family = "binomial", alpha = 1, nfolds = 5)  # alpha = 1; nfolds does 5 folds/sets of data
+
+best_lambda_lasso_3 <- lasso_3$lambda.min
+
+# view output coefficients (note: lengthy output suppressed)
+coef(lasso_3, s=best_lambda_lasso_3, exact=F)
+
+# make predictions using lasso model
+pred_lasso_3 <- predict(lasso_3, as.matrix(validation_fold_ds[, -2]), type = "response")
+
+
+```
+
+# Lasso 4 - Creating Second Unique Model
+
+```{r}
+#set seed for reproducibility
+set.seed(16)
+
+#down-sample train set (with caret downSample function)
+down_train <- downSample(x = train_final,
+                         y = train_final$TARGET) %>% #downsample on the TARGET column
+  select(-Class) #remove new Class column added by downsample function
+
+#view split is now even
+table(down_train$TARGET)
+```
+
+
+```{r}
+#set seed for reproducibility
+set.seed(16)
+
+#split training data on the target variable and partition 70% of the rows
+rows <- createDataPartition(down_train$TARGET, p=0.7, list=FALSE)
+
+#subset train data with the 70% sample to create train_fold
+train_fold_ds <- down_train[rows, ]
+
+#subset the remaining 30% of rows to create validation_fold
+validation_fold_ds <- down_train[-rows, ]
+```
+
+```{r, results='hide'}
+# Cross validated, regularized regression model
+lasso_4 <- cv.glmnet(as.matrix(train_fold_ds[, -2]), train_fold_ds$TARGET, 
+                         family = "binomial", alpha = 1, nfolds = 5)  # alpha = 1; nfolds does 5 folds/sets of data
+
+best_lambda_lasso_4 <- lasso_4$lambda.min
+
+# view output coefficients (note: lengthy output suppressed)
+coef(lasso_4, s=best_lambda_lasso_4, exact=F)
+
+# make predictions using lasso model
+pred_lasso_4 <- predict(lasso_4, as.matrix(validation_fold_ds[, -2]), type = "response")
+
+
+```
+
+# Lasso 5 - Creating Third Unique Model
+
+```{r}
+#set seed for reproducibility
+set.seed(27)
+
+#down-sample train set (with caret downSample function)
+down_train <- downSample(x = train_final,
+                         y = train_final$TARGET) %>% #downsample on the TARGET column
+  select(-Class) #remove new Class column added by downsample function
+
+#view split is now even
+table(down_train$TARGET)
+```
+
+
+```{r}
+#set seed for reproducibility
+set.seed(27)
+
+#split training data on the target variable and partition 70% of the rows
+rows <- createDataPartition(down_train$TARGET, p=0.7, list=FALSE)
+
+#subset train data with the 70% sample to create train_fold
+train_fold_ds <- down_train[rows, ]
+
+#subset the remaining 30% of rows to create validation_fold
+validation_fold_ds <- down_train[-rows, ]
+```
+
+```{r, results='hide'}
+# Cross validated, regularized regression model
+lasso_5 <- cv.glmnet(as.matrix(train_fold_ds[, -2]), train_fold_ds$TARGET, 
+                         family = "binomial", alpha = 1, nfolds = 5)  # alpha = 1; nfolds does 5 folds/sets of data
+
+best_lambda_lasso_5 <- lasso_5$lambda.min
+
+# view output coefficients (note: lengthy output suppressed)
+coef(lasso_5, s=best_lambda_lasso_5, exact=F)
+
+# make predictions using lasso model
+pred_lasso_5 <- predict(lasso_5, as.matrix(validation_fold_ds[, -2]), type = "response")
+
+
+```
+# Averaging the three models together for an improved Result
+
+```{r}
+# Average the predictions from the three models
+ave_pred <- (pred_lasso_3 + pred_lasso_4 + pred_lasso_5) / 3
+
+# turn predictions into factor
+ave_pred_f <- as.factor(ifelse(ave_pred > 0.5,1,0))
+
+# turn predictions into factor
+ave_pred_f <- ave_pred
+
+# Create confusion matrix
+conf_matrix_lasso_2_ave_pred_f <- confusionMatrix(ave_pred_f, validation_fold_ds$TARGET)
+
+# view confusion matrix
+conf_matrix_lasso_2_ave_pred_f
+
+# Calculate AUC for lasso
+AUC_stat_lasso_2_ave_pred_f <- auc(roc(validation_fold_ds$TARGET, as.numeric(ave_pred_f)))
+
+#view AUC
+AUC_stat_lasso_2_ave_pred_f
+
+# set up ROC-AUC plot data
+plot_data_lasso_2_ave_pred_f <- roc(validation_fold_ds$TARGET, as.numeric(ave_pred_f))
+
+# create ROC-AUC plot            
+ggroc(plot_data_lasso_2_ave_pred_f) +
+  ggplot2::ggtitle("Regression ROC Curve") +
+  geom_text(aes(x = 0.7, y = .1, label = paste("AUC =", round(AUC_stat_lasso_2_ave_pred_f, digits = 2))),
+            color = "white", size = 4, hjust = 1, vjust = 0) +
+  theme_minimal()+
+  theme(axis.text = element_text(size = 12, color = "white"),
+        axis.title = element_text(size = 14, color = "white"),
+        title = element_text(size = 16, face = "bold", color = "white"),
+        legend.title = element_text(color = "white"),  # Ensure legend text is visible
+        legend.text = element_text(color = "white"),
+        panel.background = element_rect(fill = "white", colour = "black"),  # Change panel background color
+        plot.background = element_rect(fill = "black", colour = "black"),  # Change overall plot background color
+        panel.grid.major = element_blank(),  # Remove major grid lines
+        panel.grid.minor = element_blank())  # Remove minor grid 
+```
+
+```{r}
+ggroc(plot_data_lasso_2_ave_pred_f, color = "white") +  # Set the curve color to white
+  ggplot2::ggtitle("Regression ROC Curve") +
+  geom_text(aes(x = 0.7, y = .1, label = paste("AUC =", round(AUC_stat_lasso_2_ave_pred_f, digits = 2))),
+            color = "white", size = 4, hjust = 1, vjust = 0) +
+  theme_minimal() +
+  theme(axis.text = element_text(size = 12, color = "white"),
+        axis.title = element_text(size = 14, color = "white"),
+        title = element_text(size = 16, face = "bold", color = "white"),
+        legend.title = element_text(color = "white"),  # Ensure legend text is visible
+        legend.text = element_text(color = "white"),
+        panel.background = element_rect(fill = "black", colour = "black"),  # Change panel background color
+        plot.background = element_rect(fill = "black", colour = "black"),  # Change overall plot background color
+        panel.grid.major = element_blank(),  # Remove major grid lines
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(color = "white"))  # Remove minor grid lines
+```
+
+
+```{r}
+# Extract the table and add it to a dataframe
+matrix_df <- as.data.frame(conf_matrix_lasso_2_ave_pred_f$table)
+colnames(matrix_df) <- c( "Prediction", "Reference", "Frequency")
+
+# Convert to long format
+matrix_long <- melt(matrix_df, id.vars = c("Reference", "Prediction"))
+```
+#Creating Confusion Matrix Plots For 'Specificity' & 'Sensitivity'
+
+```{r}
+# Create the plot
+ggplot(matrix_df, aes(x = Reference, y = Prediction, fill = Frequency)) +
+  geom_tile(color = "white") +  # Use color to distinguish tiles
+  geom_text(aes(label = Frequency), vjust = 1) +  # Add frequency count on tiles
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+                       midpoint = median(matrix_df$Frequency), 
+                       limit = c(0, max(matrix_df$Frequency))) +
+  labs(title = "Confusion Matrix", x = "Actual Class", y = "Predicted Class") +
+  theme_minimal() +  # Cleaner theme
+ theme(axis.text = element_text(size = 12, color = "white"),
+        axis.title = element_text(size = 14, color = "white"),
+        title = element_text(size = 16, face = "bold", color = "white"),
+        legend.title = element_text(color = "white"),  # Ensure legend text is visible
+        legend.text = element_text(color = "white"),
+        panel.background = element_rect(fill = "black", colour = "black"),  # Change panel background color
+        plot.background = element_rect(fill = "black", colour = "black"),  # Change overall plot background color
+        panel.grid.major = element_blank(),  # Remove major grid lines
+        panel.grid.minor = element_blank())  # Remove minor grid lines
+```
+
+
+```{r}
+matrix_standard <- as.data.frame($table)
+colnames(matrix_df) <- c("Reference", "Prediction", "Frequency")
+
+ggplot(matrix_standard, aes(x = Reference, y = Prediction, fill = Frequency)) +
+  geom_tile(color = "white") +  # Use color to distinguish tiles
+  geom_text(aes(label = Frequency), vjust = 1) +  # Add frequency count on tiles
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+                       midpoint = median(matrix_df$Frequency), 
+                       limit = c(0, max(matrix_df$Frequency))) +
+  labs(title = "Confusion Matrix", x = "Actual Class", y = "Predicted Class") +
+  theme_minimal() +  # Cleaner theme
+ theme(axis.text = element_text(size = 12, color = "white"),
+        axis.title = element_text(size = 14, color = "white"),
+        title = element_text(size = 16, face = "bold", color = "white"),
+        legend.title = element_text(color = "white"),  # Ensure legend text is visible
+        legend.text = element_text(color = "white"),
+        panel.background = element_rect(fill = "black", colour = "black"),  # Change panel background color
+        plot.background = element_rect(fill = "black", colour = "black"),  # Change overall plot background color
+        panel.grid.major = element_blank(),  # Remove major grid lines
+        panel.grid.minor = element_blank())  # Remove minor grid lines
+```
+
+
+
+```{r}
+# Check levels of the factors
+levels(ave_pred_f)
+levels(as.factor(validation_fold_ds$TARGET))
+```
