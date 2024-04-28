@@ -29,8 +29,6 @@ The Model's classification will be able to help the business understand the cost
 Sensitivity - false positives (identifying customers as credit worthy that are actually risky) and 
 Specificity - False negatives (identifying customers as risky that would be good candidates for financial products) 
 
-![image](https://github.com/HamtimeUtah/HamtimeUtah.github.io/assets/157656542/6bf544ba-781b-4bff-8e04-9258f5c0cc1c)
-
 ![Specificity](images/Business%20Impact%20Specificty.png)
 
 ![Sensitivity](images/Business%20Impact%20Sensitivity.png)
