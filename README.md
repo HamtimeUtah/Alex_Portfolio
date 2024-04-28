@@ -1,4 +1,6 @@
-# Capstone Project: Home Credit Default
+# Alex Hamil Portfolio
+
+## Capstone Project: Home Credit Default
 Repository containing Alex Hamil's portfolio of work for the data science project Home Credit Default.
 
 # Table of Contents
