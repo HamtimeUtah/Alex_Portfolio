@@ -21,7 +21,7 @@ The purpose of this project is to create a model that allows Home Credit to buil
 
 ## [My Contribution to the Project](#My-Contribution-to-the-Project)
 
-(/images/Regression%20ROC%20Curve.png)
+![](/images/Regression%20ROC%20Curve.png)
 
 ## [Solution's Value to the Business](#Solutions-Value-to-the-Business)
 (images/Business%20Impact%20Specificty.png)
