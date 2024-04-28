@@ -25,7 +25,17 @@ The purpose of this project is to create a model that allows Home Credit to buil
 
 ## [Solution's Value to the Business](#Solutions-Value-to-the-Business)
 
+The Model's classification will be able to help the business understand the costs associated with 
+Sensitivity - false positives (identifying customers as credit worthy that are actually risky) and 
+Specificity - False negatives (identifying customers as risky that would be good candidates for financial products) 
+
+![image](https://github.com/HamtimeUtah/HamtimeUtah.github.io/assets/157656542/6bf544ba-781b-4bff-8e04-9258f5c0cc1c)
+
 ![Specificity](images/Business%20Impact%20Specificty.png)
+
+![Sensitivity](images/Business%20Impact%20Sensitivity.png)
+
+Understanding these rates can help the business consider risk based pricing- where interest rates and credit amounts are adjusted for clients prone to default.
 
 ## [Challenges Our Group Faced](#Challenges_Our_Group_Faced)
 * With the overwhelming amount of data in the majority class. We found it helpful to downsample the data for this class. This helped reduce overfitting our model to the majority characteristics of customers that are capable of repayment. 
