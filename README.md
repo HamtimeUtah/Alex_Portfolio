@@ -24,7 +24,9 @@ The purpose of this project is to create a model that allows Home Credit to buil
 ![](/images/Regression%20ROC%20Curve.png)
 
 ## [Solution's Value to the Business](#Solutions-Value-to-the-Business)
-(images/Business%20Impact%20Specificty.png)
+
+![Specificity](images/Business%20Impact%20Specificty.png)
+
 ## [Challenges Our Group Faced](#Challenges_Our_Group_Faced)
 * With the overwhelming amount of data in the majority class. We found it helpful to downsample the data for this class. This helped reduce overfitting our model to the majority characteristics of customers that are capable of repayment. 
 * The limited data available about the minority class meant that we had to resample some of the same data from this class while using various data samples from the majority class. This allowed us to use a larger sample of data and potentially capture more patterns and interactions in the data.
