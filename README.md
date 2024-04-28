@@ -2,7 +2,7 @@
 Repository containing Alex Hamil's portfolio of work for the data science project Home Credit Default.
 
 # Table of Contents
-- [Business Problem Statement](#Business Problem Statement)
+- [Business Problem Statement](#Business_Problem_Statement)
 - [Our solution to the problem](## Our solution to the problem)
 - [Usage](#usage)
 - [Contributing](#contributing)
