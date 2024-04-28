@@ -25,7 +25,7 @@ The purpose of this project is to create a model that allows Home Credit to buil
 
 ## [Solution's Value to the Business](#Solutions-Value-to-the-Business)
 
-The Model's classification will be able to help the business understand the costs associated with 
+The Model's classification will be able to help the business understand the costs associated with\ 
 Sensitivity - false positives (identifying customers as credit worthy that are actually risky) and 
 Specificity - False negatives (identifying customers as risky that would be good candidates for financial products) 
 
