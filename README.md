@@ -1,6 +1,14 @@
 # Capstone Project: Home Credit Default
 Repository containing Alex Hamil's portfolio of work for the data science project Home Credit Default.
 
+# Table of Contents
+- [Business Problem Statement](## Business Problem Statement)
+- [Our solution to the problem](## Our solution to the problem)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+
+
 ## Business Problem Statement
 Home Credit is in the business of trying to provide financial products to customers in unique and diverse markets where the traditional tenets of regulated banking aren't always present. They provide financial products and services to customers that have insufficient or nonexistent traditional credit histories and metrics used to apply for loans and other financial services. In lieu of this, they have alternative data that can be used to try to predict a customer’s ability to repay loans and qualify for services.
 
