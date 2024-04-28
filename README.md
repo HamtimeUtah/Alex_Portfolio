@@ -23,7 +23,9 @@ The purpose of this project is to create a model that allows Home Credit to buil
 * Finally we decided to create several different models and train them on different segments of the downsampled majority class, while resampling sections from the minorty target variable and finally combining the results in an ensemble model.
 
 ## [My Contribution to the Project](#My-Contribution-to-the-Project)
-
+My contributions to the project where centered on creating the models and the graphical representation of the confusion matrices and the ROC-AUC curves.  
+I have attached the code that was used to generate both the XgBoosted model and the composite model that we ultimately used for out primary model.  
+This code also includes the graphical measurement metrics for ROC-AUC and the confusion matrices. 
 ![](/images/Regression%20ROC%20Curve.png)
 
 ## [Solution's Value to the Business](#Solutions-Value-to-the-Business)
