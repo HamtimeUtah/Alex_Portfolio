@@ -12,6 +12,8 @@ The purpose of this project is to create a model that allows Home Credit to buil
 * Finally we decided to create several different models and train them on different segments of the downsampled majority class, while resampling sections from the minorty target variable and finally combining the results in an ensemble model. 
 ## My Contribution to the Project
 
+![](https://github.com/HamtimeUtah/HamtimeUtah.github.io/blob/Master/images/Regression%20ROC%20Curve.png)
+
 ## Solution's Value to the Business
 
 ## Challenges Our Group Faced
