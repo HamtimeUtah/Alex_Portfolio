@@ -6,7 +6,8 @@ Repository containing Alex Hamil's portfolio of work for the data science projec
 - [Our Solution to the Problem](#Our-Solution-to-the-Problem)
 - [My Contribution to the Project](#My-Contribution-to-the-Project)
 - [Solution's Value to the Business](#Solutions-Value-to-the-Business)
-- [Challenges Our Group Faced](#Challenges_Our_Group_Faced)
+- [Challenges Our Group Faced](#Challenges-Our-Group-Faced)
+- [What I learned from the Project](#What-I-earned-from-the-Project)
 
 
 ## [Business Problem Statement](#Business-Problem-Statement)
@@ -35,9 +36,9 @@ Specificity - False negatives (identifying customers as risky that would be good
 
 Understanding these rates can help the business consider risk based pricing- where interest rates and credit amounts are adjusted for clients prone to default.
 
-## [Challenges Our Group Faced](#Challenges_Our_Group_Faced)
+## [Challenges Our Group Faced](#Challenges-Our-Group-Faced)
 * With the overwhelming amount of data in the majority class. We found it helpful to downsample the data for this class. This helped reduce overfitting our model to the majority characteristics of customers that are capable of repayment. 
 * The limited data available about the minority class meant that we had to resample some of the same data from this class while using various data samples from the majority class. This allowed us to use a larger sample of data and potentially capture more patterns and interactions in the data.
 * Capturing the nuances of the data by averaging multiple prediction models helped us to reduce variance and account for different aspects of the data. As you can see we were able to account for 85% of the variance in the data with our ensemble model. 
 
-
+[What I learned from the Project](#What-I-earned-from-the-Project)
