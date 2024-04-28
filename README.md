@@ -41,4 +41,4 @@ Understanding these rates can help the business consider risk based pricing- whe
 * The limited data available about the minority class meant that we had to resample some of the same data from this class while using various data samples from the majority class. This allowed us to use a larger sample of data and potentially capture more patterns and interactions in the data.
 * Capturing the nuances of the data by averaging multiple prediction models helped us to reduce variance and account for different aspects of the data. As you can see we were able to account for 85% of the variance in the data with our ensemble model. 
 
-[What I learned from the Project](#What-I-earned-from-the-Project)
+## [What I learned from the Project](#What-I-earned-from-the-Project)
