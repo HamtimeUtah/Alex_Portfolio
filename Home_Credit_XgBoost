@@ -1,2 +1,102 @@
 # Home_Credit_XgBoost
 This is the code for the XgBoost model we used in our Home Credit Analysis
+
+
+## Model 3: xgboost
+
+The Gradient Boosted Tree we used for our predictive model consisted of 3 hyperparameter trees (number of trees in model), tree_depth (max depth of trees) , and learn_rate (learning rate).
+
+We first tried to specify that each of these parameters needed to be tuned through a grid search using a grid that consists of 4 levels, but the model would not converge. 
+
+We eventually modified this to only 1 value for all three of our hyperparameters. The hyperparameter combination was: trees = 1, tree depth = 1, and learning rate = 1 e^-10. 
+
+Given these settings the model is oversimplified and we could see that the boosted decision tree was only operating on a single level and was creating a majority class identifier. 
+
+The model produced a high accuracy rating of 0.922 and an ROC_AUC of 0.5. This is similar to some of the other models we ran but doesn’t explain much of the variance in the data.
+
+```{r}
+## Set Seed and Split Data
+
+tcs <- train_clean_select
+
+## Set seed and create test/train
+
+set.seed(1234)
+tcs_testtrn <- initial_split(tcs, prop = 0.8,
+                            strata = TARGET)
+
+tcs_train <- training(tcs_testtrn)
+tcs_test  <- testing(tcs_testtrn)
+
+## Define the model formulation with recipe function
+
+rec_tcs <- recipe(TARGET ~ ., tcs_train) %>%
+ step_dummy(all_nominal(), -all_outcomes()) %>%
+  step_downsample(TARGET,under_ratio = 1.5)
+
+
+## Specify the algorithm type as a boosted decision tree model and 
+## Hyper-parameters are `trees`,  `tree_depth`, and `learn_rate`.
+## `tune()` specifies that each hyperparameter needs to be tuned though grid search.
+## outcome variable is categorical so we used model type of `classification`
+
+XGmodel_tcs <- boost_tree(
+  trees = tune(),
+  tree_depth = tune(),
+  learn_rate = tune()) %>% 
+  set_engine("xgboost", verbosity = 0) %>% 
+  set_mode("classification")
+
+## Grid search for tunning hyper-parameters. Creating 2 level of each hyper-parameter ( 4^3=64
+#   combinations of these three hyperparameters will be created)
+## Cross validation 5 partitions of training set
+
+hyper_grid <- grid_regular(
+  trees(),
+  tree_depth(),
+  learn_rate(),
+  levels = 1)
+
+tcs_folds <- vfold_cv(tcs_train, v=4)
+
+# Aggregate all this information to fit the model and create predictions
+
+tcs_wf <- workflow() %>%
+  add_model(XGmodel_tcs) %>%
+  add_recipe(rec_tcs)
+
+# Specify classification metrics
+
+classification_metrics <- metric_set(roc_auc, accuracy, precision, recall)
+
+set.seed(1234)
+tcs_tune <- 
+  tcs_wf %>% 
+  tune_grid(
+    resamples = tcs_folds,
+    grid = hyper_grid,
+    metrics = classification_metrics
+  ) 
+
+## Select the best model of the 1
+
+
+best_model_tcs <- tcs_tune %>%
+  select_best(metric = "recall")
+
+best_model_tcs
+
+## Work flow using new hyper-parameter values from best_model_tcs
+
+final_workflow_tcs <- 
+  tcs_wf %>% 
+  finalize_workflow(best_model_tcs)
+
+final_fit_tcs <- 
+  final_workflow_tcs %>%
+  last_fit(split = tcs_testtrn) 
+```
+```{r}
+final_fit_tcs %>%
+  collect_metrics()
+```
